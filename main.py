@@ -13,6 +13,7 @@ def main():
     jsonFile = open("output.json", "w")
     jsonFile.write(jsonDump)
     jsonFile.close()
+    importedJSON.close()
 
 def concatinateDicts(target, source):
     result = target.copy()
