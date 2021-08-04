@@ -4,16 +4,18 @@ import json
 urlPrefix = 'https://appgallery.cloud.huawei.com/ag/n/app/C27162'
 
 def main():
-    importedCsv = importTable('input.csv')
+    csv = open('input.csv', 'r')
+    importedCSV = tablib.Dataset().load(csv)
     importedJSON = open('map.json', 'r')
     importedMap = json.load(importedJSON)
-    csvDict = CSVtoDict(importedCsv)
+    csvDict = CSVtoDict(importedCSV)
     concatinated = concatinateDicts(importedMap, csvDict)
     jsonDump = json.dumps(concatinated)
     jsonFile = open("output.json", "w")
     jsonFile.write(jsonDump)
     jsonFile.close()
     importedJSON.close()
+    csv.close()
 
 def concatinateDicts(target, source):
     result = target.copy()
@@ -35,10 +37,6 @@ def createURL(oldURL, newURL):
     oldURLWithoutID = oldURL[:oldURL.rindex('/')]
     newID = newURL[newURL.rindex('/'):]
     return oldURLWithoutID + newID
-
-def importTable(name):
-    fh = open(name, 'r')
-    return tablib.Dataset().load(fh)
 
 def CSVtoDict(data):
     d = dict()
